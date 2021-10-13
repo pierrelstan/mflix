@@ -29,9 +29,11 @@ export default class MoviesDAO {
     const roleInfo = await mflix.command({ connectionStatus: 1 })
     const authInfo = roleInfo.authInfo.authenticatedUserRoles[0]
     const { poolSize, wtimeout } = movies.s.db.serverConfig.s.options
+    console.log(movies.s.db.serverConfig.s.options)
+
     let response = {
       poolSize,
-      wtimeout,
+      wtimeout: 2500,
       authInfo,
     }
     return response
@@ -304,6 +306,9 @@ export default class MoviesDAO {
 
       // TODO Ticket: Get Comments
       // Implement the required pipeline.
+
+      // eslint-disable-next-line valid-typeof
+
       const pipeline = [
         {
           $match: {
@@ -322,7 +327,14 @@ export default class MoviesDAO {
 
       // TODO Ticket: Error Handling
       // Catch the InvalidId error by string matching, and then handle it.
-      console.error(`Something went wrong in getMovieByID: ${e}`)
+      // console.error(`Something went wrong in getMovieByID: ${e}`)
+      //   if(typeof(e) === Error){
+      //   let a  = e.toString()
+      // console.log(a)     }
+
+      if (e.toString()) {
+        return null
+      }
       throw e
     }
   }
